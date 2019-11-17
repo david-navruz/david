@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<context:component-scan base-package="fr.isika.al02.banque.data" />
+	<bean id="banqueDataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/banque_spring"/>
+		<property name="username" value="root"/>
+		<property name="password" value=""/>
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	</bean>
+	<bean id="banqueEntityManagerFactory"
+		  class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+		</property>
+		<property name="dataSource" ref="banqueDataSource" />
+	</bean>
+	<bean id="banqueTransactionManager"
+		  class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="banqueEntityManagerFactory" />
+	</bean>
+	<tx:annotation-driven transaction-manager="banqueTransactionManager"/>
+</beans>	

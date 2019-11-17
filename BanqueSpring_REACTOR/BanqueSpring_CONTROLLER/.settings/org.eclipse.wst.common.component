@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="BanqueSpring_CONTROLLER-1.0">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="BanqueSpring_BUSINESS_IMPL-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BanqueSpring_BUSINESS_IMPL/BanqueSpring_BUSINESS_IMPL">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="BanqueSpring_BUSINESS_API-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BanqueSpring_BUSINESS_API/BanqueSpring_BUSINESS_API">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="BanqueSpring_ENTITY-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BanqueSpring_ENTITY/BanqueSpring_ENTITY">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="BanqueSpring_DATA_IMPL-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BanqueSpring_DATA_IMPL/BanqueSpring_DATA_IMPL">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="BanqueSpring_DATA_API-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BanqueSpring_DATA_API/BanqueSpring_DATA_API">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="BanqueSpring_CONTROLLER"/>
+        <property name="java-output-path" value="/BanqueSpring_CONTROLLER/target/classes"/>
+    </wb-module>
+</project-modules>
