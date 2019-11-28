@@ -33,8 +33,6 @@ public class DataReadWrite {
 		public static int PARENT = 4;
 		public static int DUPLICATE = 4;
 		
-	
-	
 		public static int I_NODE = 0;
 		public static int I_LASTNAME = INDEX ;
 		public static int I_FIRSTNAME = I_LASTNAME + LASTNAME;
@@ -61,7 +59,6 @@ public class DataReadWrite {
 		// method to import data from the file
 		public static ArrayList<Student> importDataFile(){
 			System.out.println(pathFile);
-			
 			int nbOfStudentsImported = 0;
 			ArrayList<Student> importList = new ArrayList<Student>();
 		
@@ -159,7 +156,6 @@ public class DataReadWrite {
 			
 			BinaryTree node = new BinaryTree();
 			Student st = new Student();
-			
 			try (RandomAccessFile raf = new RandomAccessFile
 						("C:/Users/David.NAVRUZ/Documents/workspace/Graduate Student Phonebook/binarytree.txt", "rw")){
 			raf.seek(noIndexTree * NODE_SIZE + DataReadWrite.INDEX);
@@ -172,13 +168,11 @@ public class DataReadWrite {
 			for (int i=0; i<(LASTNAME/2); i++){
 				LASTNAME += raf.readChar();
 			}
-
 			
 			for (int i=0;i<FIRSTNAME/2;i++){
 				FIRSTNAME += raf.readChar();
 			}
 			
-
 			for (int i=0;i<DPT/2;i++){
 				dpt += raf.readChar();
 			}
@@ -218,7 +212,6 @@ public class DataReadWrite {
 		
 		
 		public String completeSpace(String s, int size){
-			
 			for(int i=s.length();i<size/2;i++){
 				s += " ";
 			}
@@ -246,6 +239,5 @@ public class DataReadWrite {
 			this.fileRead = fileRead;
 		}
 		
-
 	
 }

@@ -22,18 +22,28 @@ public class BinaryTreeLogic {
 	// update a student's information
 	public void updateStudent(String lastname, String firstname, 
 			String department, String phone, String year) {
-		
-		// TO DO ?	
+		// TO DO	
 	}
 	
-	// global search method
+	// global search method 1
 	public ArrayList<BinaryTree> globalSearch(String lastname, BinaryTree tree){
-		
 		if(tree == null) 
 			tree = disk.readNode(0);
 		ArrayList<BinaryTree> result = searchInTree(lastname, tree);
 		return result;
 	}
+	
+	// global search method 2
+	public Student globalSearch2(String lastname, BinaryTree tree) {
+		if(tree == null) 
+			tree = disk.readNode(0);
+		BinaryTree res = searchInTree2(lastname, tree);
+		tree.getStudent().setIndex(res.getIndex());
+		return res.getStudent();
+
+	}
+	
+
 	
 	public BinaryTree getRoot() {
 		return root;
@@ -49,7 +59,6 @@ public class BinaryTreeLogic {
 	 * "cherry".compareTo("banana")); //1  - cherry comes after banana
 	 * trim() method eliminates the empty space at the beginning and at the end of a String
 	 */
-	
 	// method to search a student by name
 	public ArrayList<BinaryTree> searchInTree(String studentName, BinaryTree tree){
 		ArrayList<BinaryTree> result = new ArrayList<>(); 
@@ -97,7 +106,6 @@ public class BinaryTreeLogic {
 			System.out.println("\tSize of the file in bytes : " + raf.length());
 			System.out.println("\tSize of a node : " + DataReadWrite.NODE_SIZE);
 			System.out.println("\tNumber of nodes : " + nbNode);
-			
 			int index = nbNode;
 			BinaryTree addTree = new BinaryTree(null, student, null, null, null);
 			addTree.setIndex(0);
@@ -154,7 +162,6 @@ public class BinaryTreeLogic {
 						addTree.setIndexNodeParent(currentNode.getIndex());
 						System.out.println("\tWriting the tree at the end of the file - reading head: " + raf.getFilePointer());
 						disk.writeNode(addTree);
-						
 					}
 					if(compare < 0) {
 						// NODE RIGHT
@@ -171,7 +178,6 @@ public class BinaryTreeLogic {
 						addDuplicate(student, currentNode, addTree, index);
 					}
 			}
-
 		} catch (Exception e) {
 			System.out.println(e);
 			e.printStackTrace();
@@ -226,41 +232,136 @@ public class BinaryTreeLogic {
 	// method 1 to search a student in the tree
 	public ArrayList<BinaryTree> searchInTree1(String studentName, BinaryTree tree){
 		ArrayList<BinaryTree> result = new ArrayList<>(); 
+		BinaryTree currentNode = tree;
 		
-		
+		while (tree != null && !tree.getStudent().getLastName().trim().equalsIgnoreCase(studentName) 
+				&& (
+					((studentName.compareToIgnoreCase(tree.getStudent().getLastName().trim()) < 0)
+					&& (tree.getIndexNodeLeft() != -1)
+					|| (studentName.compareToIgnoreCase(tree.getStudent().getLastName().trim()) > 0) && (tree.getIndexNodeRight()!= -1)
+						))){
+			// name close to the A
+			if(studentName.compareToIgnoreCase(tree.getStudent().getLastName().trim()) < 0) {
+				if(tree.getIndexNodeLeft() != -1) {
+					tree = disk.readNode(tree.getIndexNodeLeft());
+					currentNode = tree;
+				}
+			}
+			// name close to the Z
+			if(studentName.compareToIgnoreCase(tree.getStudent().getLastName().trim()) > 0) {
+				if(tree.getIndexNodeRight() != -1) {
+					tree = disk.readNode(tree.getIndexNodeRight());
+					currentNode = tree;
+				}
+			}
+		}
+		// if it's a duplicate name
+		if(currentNode.getStudent().getLastName().compareToIgnoreCase(studentName) == 0) {
+			result.add(currentNode);
+			while(currentNode.getIndexNodeDuplicate() != -1) {
+				currentNode = disk.readNode(tree.getIndexNodeDuplicate());
+				currentNode = tree;
+			}
+		}
 		return result;
 	}
 	
 	
+		// method 12to search a student in the tree
+		public BinaryTree searchInTree2(String studentName, BinaryTree tree){
+			
+			while(tree != null && !tree.getStudent().getLastName().trim().equalsIgnoreCase(studentName)
+					&& (
+							((studentName.compareToIgnoreCase(tree.getStudent().getLastName().trim()) < 0)
+							&& (tree.getIndexNodeLeft() != -1)
+							|| (studentName.compareToIgnoreCase(tree.getStudent().getLastName().trim()) > 0) && (tree.getIndexNodeRight()!= -1)
+								))){
+				// closer to A
+				if(studentName.compareToIgnoreCase(tree.getStudent().getLastName().trim()) < 0) {
+					if(tree.getIndexNodeLeft() != -1) {
+						tree = disk.readNode(tree.getIndexNodeLeft());
+					}
+				}
+				// closer to Z
+				if(studentName.compareToIgnoreCase(tree.getStudent().getLastName().trim()) > 0) {
+					if(tree.getIndexNodeRight() != -1) {
+						tree = disk.readNode(tree.getIndexNodeRight());
+					}
+				}	
+			}
+			return tree;
+		}
 	
-	// method to display the tree
-	public void displayTree(BinaryTree tree, List<Student> liste) {
-		
-		
-		
+	
+
+		// method to display the tree
+		public void displayTree(BinaryTree tree, List<Student> liste) {
+			if(tree == null) tree = disk.readNode(0);
+			if(tree.getIndexNodeLeft() != -1)
+					displayTree(disk.readNode(tree.getIndexNodeLeft()), liste);
+			System.out.println("We add the student " + tree.getStudent().getLastName());
+			// We add the Student object to the list
+			liste.add(tree.getStudent());
+				if(tree.getIndexNodeDuplicate() != -1) {
+					BinaryTree bintree = disk.readNode(tree.getIndexNodeDuplicate());
+					System.out.println("We add a duplicate student " + bintree.getStudent().getLastName());
+					liste.add(bintree.getStudent());
+						while(bintree.getIndexNodeDuplicate() != -1) {
+							System.out.println("We add a duplicate student " + bintree.getStudent().getLastName());
+							liste.add(bintree.getStudent());
+							bintree = disk.readNode(bintree.getIndexNodeDuplicate());
+						}
+				}
+				if(tree.getIndexNodeRight() != -1) {
+					displayTree(disk.readNode(tree.getIndexNodeRight()), liste);
+				}	
 	}
 	
 	
+		
 	// method to delete a student from the tree
 	public BinaryTree delete(BinaryTree tree, Student s) {
-		
-		
+		// If the tree is null, we return null
+		if(tree == null) {
+			return tree;
+		}
+		// If the name entered matches the current student's name, we delete the node where student is located
+		if(s.getLastName().equals(tree.getStudent().getLastName())) {
+			return deleteRoot(tree);
+		}
+		// After deleting the node, we rearrange the tree
+		int compare = s.getLastName().compareTo(tree.getStudent().getLastName());
+			if(compare < 0) {
+				tree.setIndexNodeLeft(tree.getIndexNodeLeft());
+			}
+			else {
+				tree.setIndexNodeRight(tree.getIndexNodeRight());
+			}
 		return tree;
 	}
 	
 	
 	// method to delete the root
 	public BinaryTree deleteRoot(BinaryTree tree) {
-		
-		
+		if(tree.getNodeLeft() == null) {
+			return tree.getNodeRight();
+		}
+		if(tree.getNodeRight() == null) {
+			return tree.getNodeLeft();
+		}
+		BinaryTree replacement = lastDecendant(tree.getNodeLeft());
+		tree.setStudent(replacement.getStudent());
+		tree.setNodeLeft(delete(tree.getNodeLeft(), replacement.getStudent()));
 		return tree;
 	}
 	
-	
-	
-	
-	
-	
+	// returns the last node : the rightmost element
+	public BinaryTree lastDecendant(BinaryTree tree) {
+		if(tree.getNodeRight() == null) {
+			return tree;
+		}
+		return lastDecendant(tree.getNodeRight());
+	}
 	
 	
 	
