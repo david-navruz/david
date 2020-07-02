@@ -11,7 +11,7 @@
   	<spring.version>4.3.3.RELEASE</spring.version>
   	<hibernate.version>4.3.8.Final</hibernate.version>
   	<apache-dbcp.version>2.1.1</apache-dbcp.version>
-  	<mysql.version>5.1.27</mysql.version>
+  	<mysql.version>8.0.16</mysql.version>
   	<log4j.version>1.2.17</log4j.version>
   	<jsf.version>2.2.12</jsf.version>
   </properties>
